@@ -28,7 +28,7 @@ function CabinsTable() {
         )
 
     return (
-        <div className="p-8">
+        <div>
             <header className="flex flex-row items-center justify-between pb-6">
                 <h2>All Cabins</h2>
                 <div>Sorting items</div>

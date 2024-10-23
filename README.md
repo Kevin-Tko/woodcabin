@@ -23,6 +23,8 @@ This is a web application meant to offer seamless booking of a weekend getaway c
     8. React-Query - Global remote state management
     9. React-Query-devtools
     10: date-fns => simplifying working dates
+    11. React-hot-toast - Notifications styling
+    12: React-hook-form -Handling form submission and form errors
 
 ##### Tailwind CSS Setup
 

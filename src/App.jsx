@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { Toaster } from 'react-hot-toast'
 
 import AppLayout from './ui-component/AppLayout'
 import Login from './pages/Login'
@@ -49,6 +50,21 @@ function App() {
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>
             </BrowserRouter>
+            {/* Notification styling with react hot toast */}
+            <Toaster
+                position="top-center"
+                gutter={8}
+                containerStyle={{ margin: '8px' }}
+                toastOptions={{
+                    style: {
+                        fontSize: '14px',
+                        maxWidth: '500px',
+                        padding: '16px',
+                        background: '#f8f0fc',
+                        color: '#495057',
+                    },
+                }}
+            />
         </QueryClientProvider>
     )
 }

@@ -6,6 +6,22 @@
     .sidebarNavLink {
         @apply hover:bg-stone-200 hover:shadow-sm px-6 py-2 rounded cursor-pointer transition-all duration-500 flex items-center gap-3 justify-stretch;
     }
+
+    .form {
+        @apply flex flex-col gap-4 p-4 bg-stone-100 shadow-md rounded;
+    }
+
+    .formRow {
+        @apply grid grid-cols-3 items-center;
+    }
+
+    .label {
+        @apply text-sm font-bold font-sono;
+    }
+
+    .input {
+        @apply rounded border-2 border-stone-400 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-stone-400;
+    }
 }
 
 .active {

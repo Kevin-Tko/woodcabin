@@ -5,6 +5,7 @@ import { currConverter } from '../../services/helpers'
 import { HiMiniEllipsisVertical } from 'react-icons/hi2'
 
 import { deleteCabin } from '../../services/apiCabins'
+import toast from 'react-hot-toast'
 
 function TableData({ cabin }) {
     const {
@@ -23,12 +24,13 @@ function TableData({ cabin }) {
     const { isLoading, mutate } = useMutation({
         mutationFn: (id) => deleteCabin(id),
         onSuccess: () => {
+            toast.success('Cabin deleted successfully', { duration: '200' })
+
             queryClient.invalidateQueries({
                 queryKey: 'cabin',
             })
-            alert(`Cabin ${name} deleted successfulyy`)
         },
-        onError: (error) => alert(error.message),
+        onError: (error) => toast.error(error.message, { duration: '400' }),
     })
 
     if (isLoading) return <p className="text-red-500">Deleting....</p>
