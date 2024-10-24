@@ -14,17 +14,17 @@ This is a web application meant to offer seamless booking of a weekend getaway c
 ### This is a React application which has incorporated various technologies and libraries:
 
     1. VS-code IDE
-    2. Git & Github - version control
+    2. Git & Github => version control
     3. React + Vite
     4. Tailwind CSS
-    5. React-router - For routing purposes (BrowserRouter, Routes, Route)
+    5. React-router => For routing purposes (BrowserRouter, Routes, Route)
     6. React-Icons
     7. SupaBase
-    8. React-Query - Global remote state management
-    9. React-Query-devtools
+    8. React-Query => Global remote state management
+    9. React-Query => devtools
     10: date-fns => simplifying working dates
-    11. React-hot-toast - Notifications styling
-    12: React-hook-form -Handling form submission and form errors
+    11. React-hot-toast => Notifications styling
+    12: React-hook-form =>Handling form submission and form errors
 
 ##### Tailwind CSS Setup
 

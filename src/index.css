@@ -20,7 +20,11 @@
     }
 
     .input {
-        @apply rounded border-2 border-stone-400 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-stone-400;
+        @apply rounded border-2 border-stone-400 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-stone-400 text-sm font-sono;
+    }
+
+    .formButton {
+        @apply border-2 inline-block rounded border-stone-400 py-1 px-2 bg-stone-100 text-stone-700 font-semibold text-sm uppercase font-sono;
     }
 }
 
