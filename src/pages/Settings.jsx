@@ -1,9 +1,11 @@
+import SettingsForm from '../features/settings/settingsForm'
+
 function Settings() {
-  return (
-    <div>
-      <h1>This is the settings page</h1>
-    </div>
-  );
+    return (
+        <div>
+            <SettingsForm />
+        </div>
+    )
 }
 
-export default Settings;
+export default Settings

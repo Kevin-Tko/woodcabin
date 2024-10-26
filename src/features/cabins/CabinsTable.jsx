@@ -30,7 +30,7 @@ function CabinsTable() {
     return (
         <div>
             <header className="flex flex-row items-center justify-between pb-6">
-                <h2>All Cabins</h2>
+                <h2 className="text-lg font-semibold">All Cabins</h2>
                 <div>Sorting items</div>
             </header>
 
