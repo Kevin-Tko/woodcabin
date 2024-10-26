@@ -1,61 +1,42 @@
 /* eslint-disable react/prop-types */
-import toast from 'react-hot-toast'
-
 import { useForm } from 'react-hook-form'
-import { addCabin, editCabin } from '../../services/apiCabins'
+import { addCabin } from '../../services/apiCabins'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import toast from 'react-hot-toast'
 
 import Error from '../../ui-component/Error'
 
-function AddCabinForm({ cabinToEdit = {} }) {
-    const { id: editId, ...editValues } = cabinToEdit
-    const isEditSession = Boolean(editId) //Check if it is editing or adding a new cabin
+function AddCabinForm() {
+    const { register, handleSubmit, reset, getValues, formState } = useForm()
 
     const queryClient = useQueryClient()
-    const { register, handleSubmit, reset, watch, formState } = useForm({
-        defaultValues: isEditSession ? editValues : {},
-    })
 
-    //Get any form errors
     const { errors } = formState
 
-    //CREATING CABIN
-    const { isLoading: isCreating, mutate: createCabin } = useMutation({
+    //mutating the cabin data
+    const { isLoading, mutate } = useMutation({
         mutationFn: (newCabin) => addCabin(newCabin),
         onSuccess: () => {
             toast.success('Cabin added successfuly', { duration: '200' })
+
             queryClient.invalidateQueries({ queryKey: 'cabin' })
+
             reset()
         },
         onError: (error) => toast.error(error.message),
     })
 
-    //EDITING CABIN
-    const { isLoading: isEditing, mutate: cabinEdit } = useMutation({
-        mutationFn: ({ cabinToEdit, id }) => editCabin(cabinToEdit, id),
-        onSuccess: () => {
-            toast.success('Cabin successfuly edited', { duration: '200' })
-            queryClient.invalidateQueries({ queryKey: 'cabin' })
-            reset()
-        },
-        onError: (error) => toast.error(error.message),
-    })
-
-    //Submitting the form with the data captured
     function submitForm(data) {
-        //check is image still exists
-        const image =
-            typeof data.image === 'string' ? data.image : data.image[0]
+        // console.log(data.image[0])
+        mutate({ ...data, image: data.image[0] })
+    }
 
-        if (isEditSession) {
-            cabinEdit({ cabinToEdit: { ...data, image }, id: editId })
-        } else {
-            createCabin({ ...data, image: image })
-        }
+    function onError(errors) {
+        console.log(errors)
     }
 
     return (
-        <form className="form" onSubmit={handleSubmit(submitForm)}>
+        <form className="form" onSubmit={handleSubmit(submitForm, onError)}>
             <div className="formRow">
                 <label htmlFor="name" className="label">
                     Cabin name
@@ -103,8 +84,8 @@ function AddCabinForm({ cabinToEdit = {} }) {
                     {...register('regularPrice', {
                         required: 'This is a required field',
                         min: {
-                            value: 0,
-                            message: 'Price should be atleast KES:1',
+                            value: 100,
+                            message: 'Price should be atleast KES:100',
                         },
                     })}
                 />
@@ -123,10 +104,9 @@ function AddCabinForm({ cabinToEdit = {} }) {
                     className="input"
                     {...register('discount', {
                         required: 'This is a required field',
-                        validate: (value) => {
-                            value < watch('regularPrice') ||
-                                'Discount should be less than the regular price'
-                        },
+                        validate: (value) =>
+                            value <= getValues().regularPrice ||
+                            'Discount should be less than the regular price',
                     })}
                 />
                 {errors?.discount && <Error>{errors.discount.message}</Error>}
@@ -169,9 +149,9 @@ function AddCabinForm({ cabinToEdit = {} }) {
                 <button
                     className="formButton bg-green-500"
                     type="submit"
-                    disabled={isCreating || isEditing}
+                    disabled={isLoading}
                 >
-                    {isEditSession ? 'Edit Cabin' : 'Add Cabin'}
+                    Add Cabin
                 </button>
             </div>
         </form>
