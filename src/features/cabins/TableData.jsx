@@ -1,16 +1,21 @@
 /* eslint-disable react/prop-types */
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
-import { useState } from 'react'
 
 import { currConverter } from '../../services/helpers'
 import { HiMiniEllipsisVertical } from 'react-icons/hi2'
 
 import { deleteCabin } from '../../services/apiCabins'
 import AddCabinForm from './AddCabinForm'
+import Modal from '../../ui-component/Modal'
+import Menu from '../../ui-component/Menu'
+import ConfirmDelete from '../../ui-component/ConfirmDelete'
+import { useSelector } from 'react-redux'
 
-function TableData({ cabin }) {
-    const [showFormEdit, setShowFormEdit] = useState(false)
+function TableData({ cabin, menuOpenId, setMenuOpenId }) {
+    const openModal = useSelector((store) => store.cabins.openModal)
+    const deleteCabinState = useSelector((store) => store.cabins.deleteCabin)
+    const editCabinState = useSelector((store) => store.cabins.editCabin)
 
     //destructure cabin object
     const {
@@ -22,9 +27,8 @@ function TableData({ cabin }) {
         discount,
     } = cabin
 
-    //Toggling edit form
-    function handleFormEdit() {
-        setShowFormEdit((show) => !show)
+    function handleMenuOpen() {
+        setMenuOpenId((currentId) => (currentId === cabinID ? null : cabinID))
     }
 
     //Getting access to query Client which is defined on the APP page
@@ -43,10 +47,15 @@ function TableData({ cabin }) {
         onError: (error) => toast.error(error.message, { duration: '400' }),
     })
 
+    //Deleting - handling delete mutation
+    function handleDelete() {
+        mutate(cabinID)
+    }
+
     return (
         <>
             <div
-                className="grid grid-cols-6 py-2 px-4 gap-12 justify-items-center items-center text-sm font-semibold font-sono"
+                className="grid grid-cols-6 py-2 px-4 gap-12 justify-items-center items-center text-sm font-semibold font-sono bg-stone-50 rounded shadow-md"
                 role="row"
             >
                 <img src={image} alt="cabin" className="h-14" />
@@ -60,23 +69,28 @@ function TableData({ cabin }) {
                         <span>&mdash;</span>
                     )}
                 </p>
-                <div className="justify-self-end space-x-2">
-                    <button
-                        className="p-1 bg-stone-400"
-                        onClick={handleFormEdit}
-                    >
-                        Edit
-                    </button>
+                <div className="justify-self-end space-x-2  relative">
                     <button
                         className="font-bold text-lg py-1 hover:bg-stone-400 p-1 transition-all duration-700 rounded ring-1"
-                        disabled={deleting}
-                        onClick={() => mutate(cabinID)}
+                        onClick={handleMenuOpen}
                     >
                         <HiMiniEllipsisVertical />
                     </button>
+
+                    {menuOpenId === cabinID && <Menu deleting={deleting} />}
                 </div>
             </div>
-            {showFormEdit && <AddCabinForm cabinToEdit={cabin} />}
+
+            {openModal && deleteCabinState && (
+                <Modal>
+                    <ConfirmDelete handleDelete={handleDelete} />,
+                </Modal>
+            )}
+            {openModal && editCabinState && (
+                <Modal>
+                    <AddCabinForm cabinToEdit={cabin} />
+                </Modal>
+            )}
         </>
     )
 }

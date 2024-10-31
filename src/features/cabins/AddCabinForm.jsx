@@ -4,11 +4,15 @@ import toast from 'react-hot-toast'
 import { useForm } from 'react-hook-form'
 import { addCabin, editCabin } from '../../services/apiCabins'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { closeModal } from './cabinSlice'
 
 import Error from '../../ui-component/Error'
+import { useDispatch } from 'react-redux'
 
 function AddCabinForm({ cabinToEdit = {} }) {
+    const dispatch = useDispatch()
     const { id: editId, ...editValues } = cabinToEdit
+
     const isEditSession = Boolean(editId) //Check if it is editing or adding a new cabin
 
     const queryClient = useQueryClient()
@@ -49,9 +53,18 @@ function AddCabinForm({ cabinToEdit = {} }) {
 
         if (isEditSession) {
             cabinEdit({ cabinToEdit: { ...data, image }, id: editId })
+
+            dispatch(closeModal())
         } else {
             createCabin({ ...data, image: image })
+
+            dispatch(closeModal())
         }
+    }
+
+    //closing Modal using the cancel button
+    function handleCloseModal() {
+        dispatch(closeModal())
     }
 
     return (
@@ -163,9 +176,15 @@ function AddCabinForm({ cabinToEdit = {} }) {
             </div>
 
             <div className="col-span-2  space-x-4 flex justify-center items-center py-1">
-                <button className="formButton " type="reset">
-                    Cancel
-                </button>
+                {!isEditSession && (
+                    <button
+                        className="formButton "
+                        type="reset"
+                        onClick={handleCloseModal}
+                    >
+                        Cancel
+                    </button>
+                )}
                 <button
                     className="formButton bg-green-500"
                     type="submit"

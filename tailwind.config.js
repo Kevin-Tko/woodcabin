@@ -22,6 +22,7 @@ export default {
             gridTemplateColumns: {
                 // Complex site-specific column configuration
                 applayoutcols: '20fr 80fr',
+                menulayout: 'auto 1fr',
             },
             gridTemplateRows: {
                 applayoutrows: '10fr 90fr',

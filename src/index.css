@@ -26,6 +26,10 @@
     .formButton {
         @apply border-2 inline-block rounded border-stone-400 py-1 px-2 bg-stone-100 text-stone-700 font-semibold text-sm uppercase font-sono;
     }
+
+    .filterButton {
+        @apply text-sm font-sono font-semibold bg-stone-100 p-1 rounded shadow-md hover:bg-green-500 transition-all duration-500;
+    }
 }
 
 .active {
