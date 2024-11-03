@@ -12,6 +12,8 @@ import Cabins from './pages/Cabins'
 import Settings from './pages/Settings'
 import User from './pages/User'
 import PageNotFound from './pages/PageNotFound'
+import Booking from './pages/Booking'
+import Checkin from './pages/Checkin'
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -38,6 +40,14 @@ function App() {
                         />
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="bookings" element={<Bookings />} />
+                        <Route
+                            path="bookings/:bookingID"
+                            element={<Booking />}
+                        />
+                        <Route
+                            path="checkin/:bookingID"
+                            element={<Checkin />}
+                        />
                         <Route path="account" element={<Account />} />
                         <Route path="cabins" element={<Cabins />} />
                         <Route path="settings" element={<Settings />} />

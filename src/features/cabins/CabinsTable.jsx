@@ -36,6 +36,19 @@ function CabinsTable() {
         filterCabins = data.filter((cabin) => cabin.discount !== 0)
     //-------------Filter Logic-----------------//
 
+    //-------------Sorting Logic-----------------//
+    const sortValue = searchParams.get('sortBy') || 'name-asc'
+
+    const [field, direction] = sortValue.split('-')
+
+    const sortModifier = direction === 'asc' ? 1 : -1
+
+    const sortedCabins = filterCabins?.sort(
+        (a, b) => (a[field] - b[field]) * sortModifier,
+    )
+
+    //-------------Sorting Logic-----------------//
+
     return (
         <div className="p-3 bg-stone-100">
             <HeaderComponent />
@@ -47,7 +60,7 @@ function CabinsTable() {
                 <TableHeader />
 
                 <div className="flex flex-col gap-2">
-                    {filterCabins?.map((cabin) => (
+                    {sortedCabins?.map((cabin) => (
                         <TableData
                             key={cabin.id}
                             cabin={cabin}

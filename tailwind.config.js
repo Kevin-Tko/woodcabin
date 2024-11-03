@@ -23,6 +23,7 @@ export default {
                 // Complex site-specific column configuration
                 applayoutcols: '20fr 80fr',
                 menulayout: 'auto 1fr',
+                tabledata: '5% 25% 25% 25% 5% 5%',
             },
             gridTemplateRows: {
                 applayoutrows: '10fr 90fr',

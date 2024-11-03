@@ -1,9 +1,7 @@
+import BookingsTable from '../features/bookings/BookingsTable'
+
 function Bookings() {
-  return (
-    <div>
-      <h1>This is the Bookings page</h1>
-    </div>
-  );
+    return <BookingsTable />
 }
 
-export default Bookings;
+export default Bookings
