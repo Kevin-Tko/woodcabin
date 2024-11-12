@@ -1,4 +1,4 @@
-import SettingsForm from '../features/settings/settingsForm'
+import SettingsForm from '../features/settings/SettingsForm'
 
 function Settings() {
     return (

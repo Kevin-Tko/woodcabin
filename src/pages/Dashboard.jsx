@@ -1,4 +1,4 @@
-import Button from '../ui-component/Button'
+import {Button} from '../ui-component/Button'
 
 function Dashboard() {
     return (
