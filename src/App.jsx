@@ -14,6 +14,7 @@ import User from './pages/User'
 import PageNotFound from './pages/PageNotFound'
 import Booking from './pages/Booking'
 import Checkin from './pages/Checkin'
+import ProtectedRoute from './features/authentication/ProtectedRoute'
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -32,7 +33,13 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     {/* Applayout encloses all other routes except login and error route */}
-                    <Route element={<AppLayout />}>
+                    <Route
+                        element={
+                            <ProtectedRoute>
+                                <AppLayout />
+                            </ProtectedRoute>
+                        }
+                    >
                         {/* Child routes inside app layout start here */}
                         <Route
                             index

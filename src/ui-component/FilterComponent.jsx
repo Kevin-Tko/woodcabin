@@ -12,6 +12,10 @@ function FilterComponent({ filterField, options }) {
     //Function to set parameters as per clicked filter button
     function handleParams(value) {
         searchParams.set(filterField, value)
+
+        //ensures that when filtering, the page is always set to page 1
+        if (searchParams.get('page')) searchParams.set('page', 1)
+
         setSearchParams(searchParams)
     }
 

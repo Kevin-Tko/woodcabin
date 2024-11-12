@@ -13,13 +13,25 @@ import {
 } from '../../utils/helpers'
 import LoadingComponent from '../../ui-component/LoadingComponent'
 import ErrorComponent from '../../ui-component/ErrorComponent'
+import { useCheckout } from './useCheckout'
+import { useDelete } from './useDelete'
+import Modal from '../../ui-component/Modal'
+import ConfirmDelete from '../../ui-component/ConfirmDelete'
+import { useDispatch, useSelector } from 'react-redux'
+import { openModal, closeModal } from '../cabins/cabinSlice'
 
 function BookingDetails() {
     const navigate = useNavigate()
 
-    const { isLoading, booking, error } = useBooking()
+    const dispatch = useDispatch()
+    const modalOpen = useSelector((store) => store.cabins.openModal)
 
-    if (isLoading) return <LoadingComponent />
+    const { isLoading, booking, error } = useBooking()
+    const { isCheckingout, checkout } = useCheckout()
+    const { deletingBooking, bookingDelete } = useDelete()
+
+    if (isLoading || isCheckingout || deletingBooking)
+        return <LoadingComponent />
 
     const {
         id: bookingID,
@@ -43,6 +55,19 @@ function BookingDetails() {
     const guests = numberGuests === 1 ? 0 : numberGuests - 1
     const totalPrice = extrasPrice ? cabinPrice + extrasPrice : cabinPrice
     const bookingDate = formatedDateTime(created_at)
+
+    function handleCheckout() {
+        checkout(bookingID)
+    }
+
+    function handleOpenModal() {
+        dispatch(openModal())
+    }
+
+    function handleDelete() {
+        bookingDelete(bookingID)
+        closeModal(false)
+    }
 
     return (
         <div className="p-4 space-y-6">
@@ -130,13 +155,25 @@ function BookingDetails() {
                     {status === 'unconfirmed' && (
                         <button
                             className="inline-block py-1 px-2 bg-green-500 rounded"
-                            onClick={() => navigate(`checkin/${bookingID}`)}
+                            onClick={() => navigate(`/checkin/${bookingID}`)}
+                            disabled={isCheckingout}
                         >
                             Check In
                         </button>
                     )}
+                    {status === 'checked-in' && (
+                        <button
+                            className="inline-block py-1 px-2 bg-green-500 rounded"
+                            onClick={handleCheckout}
+                        >
+                            Check Out
+                        </button>
+                    )}
 
-                    <button className="inline-block py-1 px-2 bg-red-500 rounded">
+                    <button
+                        className="inline-block py-1 px-2 bg-red-500 rounded"
+                        onClick={handleOpenModal}
+                    >
                         Delete Booking
                     </button>
                     <button
@@ -146,6 +183,13 @@ function BookingDetails() {
                         Back
                     </button>
                 </div>
+                {modalOpen && (
+                    <Modal>
+                        <ConfirmDelete
+                            handleDelete={handleDelete}
+                        ></ConfirmDelete>
+                    </Modal>
+                )}
             </div>
         </div>
     )

@@ -3,39 +3,39 @@
 @tailwind utilities;
 
 @layer components {
-    .sidebarNavLink {
-        @apply hover:bg-stone-200 hover:shadow-sm px-6 py-2 rounded cursor-pointer transition-all duration-500 flex items-center gap-3 justify-stretch;
-    }
+	.sidebarNavLink {
+		@apply hover:bg-stone-200 hover:shadow-sm px-6 py-2 rounded cursor-pointer transition-all duration-500 flex items-center gap-3 justify-stretch;
+	}
 
-    .form {
-        @apply flex flex-col gap-4 p-4 bg-stone-100 shadow-md rounded;
-    }
+	.form {
+		@apply flex flex-col gap-4 p-4 bg-stone-100 shadow-md rounded;
+	}
 
-    .formRow {
-        @apply grid grid-cols-3 items-center;
-    }
+	.formRow {
+		@apply grid grid-cols-3 items-center;
+	}
 
-    .label {
-        @apply text-sm font-bold font-sono;
-    }
+	.label {
+		@apply text-sm font-bold font-sono;
+	}
 
-    .input {
-        @apply rounded border-2 border-stone-400 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-stone-400 text-sm font-sono;
-    }
+	.input {
+		@apply rounded border-2 border-stone-400 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-stone-400 text-sm font-sono;
+	}
 
-    .formButton {
-        @apply border-2 inline-block rounded border-stone-400 py-1 px-2 bg-stone-100 text-stone-700 font-semibold text-sm uppercase font-sono;
-    }
+	.formButton {
+		@apply border-2 inline-block rounded border-stone-400 py-1 px-2 bg-stone-100 text-stone-700 font-semibold text-sm uppercase font-sono;
+	}
 
-    .filterButton {
-        @apply text-sm font-sono font-semibold bg-stone-100 p-1 rounded shadow-md hover:bg-green-500 transition-all duration-500;
-    }
+	.filterButton {
+		@apply text-sm font-sono font-semibold bg-stone-100 p-1 rounded shadow-md hover:bg-green-500 transition-all duration-500;
+	}
 }
 
 .active {
-    @apply bg-stone-200;
+	@apply bg-indigo-100;
 }
 
 .active span {
-    @apply text-blue-500 transition-all duration-500;
+	@apply text-indigo-500 transition-all duration-500;
 }

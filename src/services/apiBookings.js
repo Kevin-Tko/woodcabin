@@ -47,8 +47,8 @@ export async function getBooking(id) {
     return booking
 }
 
-export async function updateBooking(id) {
-    let query = supabase.from('bookings').update({ status: 'checked-in' })
+export async function updateBooking(id, obj) {
+    let query = supabase.from('bookings').update(obj)
 
     if (id) query = query.eq('id', id).select()
 
@@ -60,4 +60,19 @@ export async function updateBooking(id) {
     }
 
     return data
+}
+
+export async function deleteBooking(id) {
+    let query = supabase.from('bookings').delete()
+
+    if (id) query = query.eq('id', id)
+
+    const { data: deletedBooking, error } = await query
+
+    if (error) {
+        console.error(error.message)
+        throw new Error('Failed to delete booking')
+    }
+
+    return deletedBooking
 }

@@ -14,41 +14,27 @@ import {
 import LoadingComponent from '../../ui-component/LoadingComponent'
 import ErrorComponent from '../../ui-component/ErrorComponent'
 import { useEffect, useState } from 'react'
-// import { useMutation, useQueryClient } from '@tanstack/react-query'
-// import { updateBooking } from '../../services/apiBookings'
-// import toast from 'react-hot-toast'
+import { useCheckin } from './useCheckin'
+import { useSettings } from '../settings/useSettings'
 
 function CheckinDetails() {
-    const [confirmPaid, setConfirmPaid] = useState(false)
     const navigate = useNavigate()
-    // const queryClient = useQueryClient()
+    const [confirmPaid, setConfirmPaid] = useState(false)
+    const [breakfastIncluded, setBreakfastIncluded] = useState(false)
 
+    const { updating, checkin } = useCheckin()
     const { isLoading, booking, error } = useBooking()
-
-    console.log(booking)
+    const { settings, loadingSettings, errorSettings } = useSettings()
 
     useEffect(
         function () {
-            setConfirmPaid(booking?.isPaid ?? false)
+            setConfirmPaid(booking?.at(0).isPaid || false)
+            setBreakfastIncluded(booking?.at(0).hasBreakfast || false)
         },
-        [booking?.isPaid],
+        [booking],
     )
 
-    // const { isLoading: updating, mutate } = useMutation({
-    //     mutationFn: (id, options) => updateBooking(id, options),
-    //     onSuccess: () => {
-    //         toast.success('Guest checked in successfully', { duration: '200' })
-    //         queryClient.invalidateQueries({
-    //             queryKey: 'bookings',
-    //         })
-    //     },
-    //     onError: (error) =>
-    //         toast.error(`Failed to checkin guest:${error.message}`, {
-    //             duration: '200',
-    //         }),
-    // })
-
-    if (isLoading) return <LoadingComponent />
+    if (isLoading || loadingSettings) return <LoadingComponent />
 
     const {
         id: bookingID,
@@ -57,32 +43,47 @@ function CheckinDetails() {
         numberGuests,
         hasBreakfast,
         cabinPrice,
-        extrasPrice,
         isPaid,
         created_at,
         cabins: { name: cabinName },
         guests: { name: guestName, email, nationalID, countryFlag },
     } = booking[0]
 
-    console.log(guestName, email)
+    console.log(settings)
 
-    if (error) return <ErrorComponent />
+    const { breakFastPrice } = settings
+
+    if (error || errorSettings) return <ErrorComponent />
 
     const daysStayed = daysToStay(startDate, endDate)
     const dates = formatedDates(startDate, endDate)
     const guests = numberGuests === 1 ? 0 : numberGuests - 1
-    const totalPrice = extrasPrice ? cabinPrice + extrasPrice : cabinPrice
+    const totalBreakfastPrice = breakFastPrice * daysStayed * numberGuests
+    // const extrasIncluded = cabinPrice + totalBreakfastPrice
+    // const totalCabinPrice = extrasPrice ? extrasIncluded : cabinPrice
+    const totalCabinPrice = cabinPrice + totalBreakfastPrice
     const bookingDate = formatedDateTime(created_at)
 
     // function handleUpdatePaid(options) {
     //     mutate(bookingID, options)
     // }
 
-    // function handleCheckin(options) {
-    //     const option = JSON.stringify(options)
-    //     mutate(bookingID, option)
-    //     navigate('/bookings')
-    // }
+    function handleCheckin() {
+        if (!confirmPaid) return
+
+        if (breakfastIncluded) {
+            checkin({
+                id: bookingID,
+                breakFast: {
+                    hasBreakfast: true,
+                    extrasPrice: totalBreakfastPrice,
+                    totalPrice: totalCabinPrice,
+                },
+            })
+        } else {
+            checkin({ bookingID, breakFast: {} })
+        }
+    }
 
     return (
         <div className="p-4 space-y-6">
@@ -154,27 +155,49 @@ function CheckinDetails() {
                             </span>
                             <span>Total price</span>
                             <span>
-                                {`${formatCurrency(totalPrice)} (${formatCurrency(cabinPrice)} cabin ${extrasPrice ? `+${formatCurrency(extrasPrice)}` : ''})`}
+                                {/* {`${formatCurrency(totalCabinPrice)} (${formatCurrency(cabinPrice)} cabin ${extrasPrice ? `+${formatCurrency(extrasPrice)}` : ''})`} */}
+                                {`${formatCurrency(totalCabinPrice)} (${formatCurrency(cabinPrice)} cabin ${breakfastIncluded ? `+${formatCurrency(totalBreakfastPrice)}` : ''})`}
                             </span>
                         </p>
                         <p>{isPaid ? 'Paid' : 'Not Paid'}</p>
                     </div>
                     <p className="text-right">Booked {bookingDate}</p>
                 </div>
+
+                {!hasBreakfast && (
+                    <div className="px-6 flex flex-row gap-4 items-center">
+                        <input
+                            type="checkbox"
+                            checked={breakfastIncluded}
+                            onChange={() => {
+                                setBreakfastIncluded((breakfast) => !breakfast)
+                                setConfirmPaid(false)
+                            }}
+                        />
+                        <label>
+                            Want to add breakfast for{' '}
+                            {formatCurrency(totalBreakfastPrice)} ?
+                        </label>
+                    </div>
+                )}
                 <div className="px-6 flex flex-row gap-4 items-center">
                     <input
                         type="checkbox"
-                        value={confirmPaid}
+                        checked={confirmPaid}
+                        disabled={confirmPaid || updating}
                         onChange={() => setConfirmPaid((confirm) => !confirm)}
-                        id="confirm"
                     />
                     <label>
                         I confirm that {guestName} has paid the total amount of{' '}
-                        {formatCurrency(totalPrice)}
+                        {formatCurrency(totalCabinPrice)}
                     </label>
                 </div>
                 <div className="p-4 flex flex-row gap-4 justify-end">
-                    <button className="inline-block py-1 px-2 bg-green-500 rounded">
+                    <button
+                        className="inline-block py-1 px-2 bg-green-500 rounded"
+                        disabled={!confirmPaid || updating}
+                        onClick={handleCheckin}
+                    >
                         Check In booking #{bookingID}
                     </button>
 

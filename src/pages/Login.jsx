@@ -1,10 +1,9 @@
-import Button from '../ui-component/Button'
+import LoginForm from '../features/authentication/LoginForm'
 
 function Login() {
     return (
-        <div>
-            <h1>Welcome, this is the login page</h1>
-            <Button route="/dashboard">Login</Button>
+        <div className="relative h-screen w-full">
+            <LoginForm />
         </div>
     )
 }
