@@ -1,6 +1,7 @@
 import AddCabinForm from '../features/cabins/AddCabinForm'
 import CabinsTable from '../features/cabins/CabinsTable'
 import Modal from '../ui-component/Modal'
+import Table from '../ui-component/Table'
 import { addNewCabin, openModal } from '../features/cabins/cabinSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -17,7 +18,8 @@ function Cabins() {
 
     return (
         <div className="p-4 space-y-3 bg-stone-200">
-            <CabinsTable />
+            {/* <CabinsTable /> */}
+            <Table/>
             <div>
                 <button
                     onClick={handleModalOpen}

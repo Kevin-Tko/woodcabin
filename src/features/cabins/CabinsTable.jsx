@@ -3,11 +3,12 @@ import { getCabins } from '../../services/apiCabins'
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-import TableData from './TableData'
+// import TableData from './TableData'
 import TableHeader from './TableHeader'
 import LoadingComponent from '../../ui-component/LoadingComponent'
 import ErrorComponent from '../../ui-component/ErrorComponent'
 import HeaderComponent from './HeaderComponent'
+import Table from '../../ui-component/Table'
 
 function CabinsTable() {
     const [searchParams] = useSearchParams()
@@ -49,7 +50,14 @@ function CabinsTable() {
 
     //-------------Sorting Logic-----------------//
 
+    console.log(sortedCabins)
+
+    if (sortedCabins) {
+        sortedCabins.map((cabin) => <Table cabin={cabin} key={cabin.id}/>)
+    }
+
     return (
+
         <div className="p-3 bg-stone-100">
             <HeaderComponent />
 
@@ -60,17 +68,20 @@ function CabinsTable() {
                 <TableHeader />
 
                 <div className="flex flex-col gap-2">
-                    {sortedCabins?.map((cabin) => (
+                    {sortedCabins?.map((cabin) =>( 
+                        
                         <TableData
                             key={cabin.id}
                             cabin={cabin}
                             menuOpenId={menuOpenId}
                             setMenuOpenId={setMenuOpenId}
                         />
-                    ))}
+                    )
+                )}
                 </div>
             </div>
         </div>
+   
     )
 }
 
