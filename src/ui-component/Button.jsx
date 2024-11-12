@@ -6,7 +6,7 @@ export function Button({ children, route }) {
 	const navigate = useNavigate();
 
 	return (
-		<button className='py-1 px-2 bg-slate-500' onClick={() => navigate(route)}>
+		<button className='py-1 px-2 bg-slate-300' onClick={() => navigate(route)}>
 			{children}
 		</button>
 	);
