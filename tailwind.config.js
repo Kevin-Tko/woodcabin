@@ -25,6 +25,7 @@ export default {
 				navlinkcols: '30fr 70fr',
 				menulayout: 'auto 1fr',
 				tabledata: '5% 25% 25% 25% 5% 5%',
+				today: '1fr auto 2fr 1fr 1fr',
 			},
 			gridTemplateRows: {
 				applayoutrows: '10fr 90fr',

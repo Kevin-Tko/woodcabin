@@ -1,63 +1,69 @@
-import TableRow from './TableRow'
+/* eslint-disable react/prop-types */
+import TableRow from './TableRow';
 import TableHead from './TableHead';
-import {formatCurrency} from '../utils/helpers'
+import { formatCurrency } from '../utils/helpers';
+import { daysToStay } from '../utils/helpers';
+import { DetailsButton } from '../ui-component/Button';
 
-function Table({cabin}) {
+import { HiOutlineEye } from 'react-icons/hi2';
 
-  console.log(cabin)
+function Table({ cabins = [], headers = [], bookings = [] }) {
+	return (
+		<table className='table-fixed min-w-full font-poppins text-xs font-light bg-indigo-50 border-2 border-indigo-50 rounded-lg'>
+			<thead>
+				<TableRow>
+					{headers.map((header, idx) => (
+						<TableHead key={header}>{headers[idx]}</TableHead>
+					))}
+				</TableRow>
+			</thead>
 
-  const {name, maxCapacity, regularPrice, discount} = cabin
+			<tbody className='text-center'>
+				{cabins &&
+					cabins.map((el) => {
+						return (
+							<TableRow key={el.id}>
+								<td className='py-5 font-semibold'>{el.name}</td>
+								<td>
+									{el.maxCapacity} <span>Guests</span>
+								</td>
+								<td>{formatCurrency(el.regularPrice)}</td>
+								<td>{el.discount ? formatCurrency(el.discount) : <span>&mdash;</span>}</td>
+								<td>
+									<div className='flex justify-center items-center h-full'>
+										<DetailsButton icon={<HiOutlineEye />} id={el.id}>
+											see more
+										</DetailsButton>
+									</div>
+								</td>
+							</TableRow>
+						);
+					})}
 
-  const TableHeaders = ['cabin', 'capacity', 'price', 'discount', 'button']
-
-    return(
-    <table className="table-fixed min-w-full">
-    <thead>
-        <TableRow>
-            {TableHeaders.map((header, idx)=>
-                <TableHead key={header}>{TableHeaders[idx]}</TableHead>
-            )}
-        </TableRow>
-    </thead>
-    <tbody>
-      <TableRow>
-        {Object.keys(cabin).forEach(key=> {
-          if(key==='regularPrice' || key==='discount') {
-            return <td>{formatCurrency(cabin[key])}</td>
-          }else {
-            return <td>{cabin[key]}</td>
-          }
-        })}
-      </TableRow>
-
-      {/* <img src={image} alt="cabin" className="h-14" />
-                <p>{name}</p>
-                <p>{maxCapacity} people</p>
-                <p>{currConverter(regularPrice)}</p>
-                <p>
-                    {cabin.discount ? (
-                        currConverter(discount)
-                    ) : (
-                        <span>&mdash;</span>
-                    )}
-                </p> */}
-      {/* <tr>
-        <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-        <td>Malcolm Lockyer</td>
-        <td>1961</td>
-      </tr>
-      <tr>
-        <td>Witchy Woman</td>
-        <td>The Eagles</td>
-        <td>1972</td>
-      </tr>
-      <tr>
-        <td>Shining Star</td>
-        <td>Earth, Wind, and Fire</td>
-        <td>1975</td>
-      </tr> */}
-    </tbody>
-  </table>)
+				{bookings &&
+					bookings.map((el) => {
+						return (
+							<TableRow key={el.id}>
+								<td className='py-5 font-semibold'>{el.cabins.name}</td>
+								<td>
+									{el.guests.name} <span>Guests</span>
+								</td>
+								<td>{`${daysToStay(el.startDate, el.endDate)} Days`}</td>
+								<td className='font-bold lowercase'>{el.status}</td>
+								<td>{formatCurrency(el.totalPrice)}</td>
+								<td>
+									<div className='flex justify-center items-center h-full'>
+										<DetailsButton icon={<HiOutlineEye />} id={el.id}>
+											see more
+										</DetailsButton>
+									</div>
+								</td>
+							</TableRow>
+						);
+					})}
+			</tbody>
+		</table>
+	);
 }
 
 export default Table;

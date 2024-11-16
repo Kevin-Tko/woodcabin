@@ -1,9 +1,7 @@
+import SignUpForm from '../features/authentication/SignUpForm';
+
 function User() {
-  return (
-    <div>
-      <h1>Hi, this is the user page</h1>
-    </div>
-  );
+	return <SignUpForm />;
 }
 
 export default User;

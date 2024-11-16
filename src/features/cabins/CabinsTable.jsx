@@ -1,88 +1,45 @@
-import { useQuery } from '@tanstack/react-query'
-import { getCabins } from '../../services/apiCabins'
-import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom';
 
-// import TableData from './TableData'
-import TableHeader from './TableHeader'
-import LoadingComponent from '../../ui-component/LoadingComponent'
-import ErrorComponent from '../../ui-component/ErrorComponent'
-import HeaderComponent from './HeaderComponent'
-import Table from '../../ui-component/Table'
+import { useCabins } from './useCabins';
+
+import LoadingComponent from '../../ui-component/LoadingComponent';
+import ErrorComponent from '../../ui-component/ErrorComponent';
+import Table from '../../ui-component/Table';
 
 function CabinsTable() {
-    const [searchParams] = useSearchParams()
-    //Controlling the context menu in the table rows
-    const [menuOpenId, setMenuOpenId] = useState(null)
+	const TableHeaders = ['cabin', 'capacity', 'price', 'discount', 'details'];
+	const [searchParams] = useSearchParams();
 
-    //-----------Data Quering Logic fron supaBase DB------------//
-    const { isError, isLoading, data, error } = useQuery({
-        queryKey: ['cabin'],
-        queryFn: getCabins, //Funtion in services/apiCabin
-    })
-    //if data is loading
-    if (isLoading) return <LoadingComponent />
-    //if an error occurs while loading data
-    if (isError) return <ErrorComponent error={error.message} />
-    //-----------Data Quering Logic fron supaBase DB------------//
+	//Get all cabins using useCabins custom hook
+	const { allCabins, isLoading, error } = useCabins();
 
-    //-------------Filter Logic-----------------//
-    const filterValue = searchParams.get('discount') || 'all'
+	//if data is loading
+	if (isLoading) return <LoadingComponent />;
+	//if an error occurs while loading data
+	if (error) return <ErrorComponent error={error.message} />;
+	//-----------Data Quering Logic fron supaBase DB------------//
 
-    let filterCabins
-    if (filterValue === 'all') filterCabins = data
-    if (filterValue === 'no-discount')
-        filterCabins = data.filter((cabin) => cabin.discount === 0)
-    if (filterValue === 'with-discount')
-        filterCabins = data.filter((cabin) => cabin.discount !== 0)
-    //-------------Filter Logic-----------------//
+	//-------------Filter Logic-----------------//
+	const filterValue = searchParams.get('discount') || 'all';
 
-    //-------------Sorting Logic-----------------//
-    const sortValue = searchParams.get('sortBy') || 'name-asc'
+	let filterCabins;
+	if (filterValue === 'all') filterCabins = allCabins;
+	if (filterValue === 'no-discount') filterCabins = allCabins.filter((cabin) => cabin.discount === 0);
+	if (filterValue === 'with-discount') filterCabins = allCabins.filter((cabin) => cabin.discount !== 0);
+	//-------------Filter Logic-----------------//
 
-    const [field, direction] = sortValue.split('-')
+	//-------------Sorting Logic-----------------//
+	const sortValue = searchParams.get('sortBy') || 'name-asc';
 
-    const sortModifier = direction === 'asc' ? 1 : -1
+	const [field, direction] = sortValue.split('-');
 
-    const sortedCabins = filterCabins?.sort(
-        (a, b) => (a[field] - b[field]) * sortModifier,
-    )
+	const sortModifier = direction === 'asc' ? 1 : -1;
 
-    //-------------Sorting Logic-----------------//
+	const sortedCabins = filterCabins?.sort((a, b) => (a[field] - b[field]) * sortModifier);
 
-    console.log(sortedCabins)
+	//-------------Sorting Logic-----------------//
 
-    if (sortedCabins) {
-        sortedCabins.map((cabin) => <Table cabin={cabin} key={cabin.id}/>)
-    }
-
-    return (
-
-        <div className="p-3 bg-stone-100">
-            <HeaderComponent />
-
-            <div
-                className=" border-2 grid grid-cols-1 rounded gap-2 p-3"
-                role="table"
-            >
-                <TableHeader />
-
-                <div className="flex flex-col gap-2">
-                    {sortedCabins?.map((cabin) =>( 
-                        
-                        <TableData
-                            key={cabin.id}
-                            cabin={cabin}
-                            menuOpenId={menuOpenId}
-                            setMenuOpenId={setMenuOpenId}
-                        />
-                    )
-                )}
-                </div>
-            </div>
-        </div>
-   
-    )
+	return <Table cabins={sortedCabins} headers={TableHeaders} />;
 }
 
-export default CabinsTable
+export default CabinsTable;

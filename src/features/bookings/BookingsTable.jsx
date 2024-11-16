@@ -1,70 +1,45 @@
-import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { useBookings } from './useBookings'
+import { useSearchParams } from 'react-router-dom';
+import { useBookings } from './useBookings';
 
-import TableData from './TableData'
-import TableHeader from './TableHeader'
-import LoadingComponent from '../../ui-component/LoadingComponent'
-import ErrorComponent from '../../ui-component/ErrorComponent'
-import HeaderComponent from './HeaderComponent'
-import Pagination from '../../ui-component/Pagination'
+import LoadingComponent from '../../ui-component/LoadingComponent';
+import ErrorComponent from '../../ui-component/ErrorComponent';
+import HeaderComponent from './HeaderComponent';
+import Pagination from '../../ui-component/Pagination';
+import Table from '../../ui-component/Table';
 
 function BookingsTable() {
-    const [searchParams] = useSearchParams()
-    //Controlling the context menu in the table rows
-    const [menuOpenId, setMenuOpenId] = useState(null)
+	const tableHeaders = ['Cabin', 'Guest', 'Days', 'Status', 'Amount', 'Details'];
 
-    //Using the useBookings custom hook
-    const { isLoading, error, bookings, count } = useBookings()
+	const [searchParams] = useSearchParams();
 
-    //if an error occurs while loading data
-    if (error) return <ErrorComponent error={error.message} />
+	//Using the useBookings custom hook
+	const { isLoading, error, bookings, count } = useBookings();
 
-    //-------------Filter Logic-----------------//
-    // const filterValue = searchParams.get('status') || 'all'
+	if (isLoading) return <LoadingComponent />;
+	if (error) return <ErrorComponent error={error.message} />;
 
-    let filterBookings = bookings
+	//-------------Filter Logic-----------------//
+	// const filterValue = searchParams.get('status') || 'all'
 
-    const sortValue = searchParams.get('sortBy') || 'totalPrice-asc'
+	let filterBookings = bookings;
 
-    const [field, direction] = sortValue.split('-')
+	const sortValue = searchParams.get('sortBy') || 'totalPrice-asc';
 
-    const sortModifier = direction === 'asc' ? 1 : -1
+	const [field, direction] = sortValue.split('-');
 
-    const sortedBookings = filterBookings?.sort(
-        (a, b) => (a[field] - b[field]) * sortModifier,
-    )
+	const sortModifier = direction === 'asc' ? 1 : -1;
 
-    //-------------Sorting Logic-----------------//
+	const sortedBookings = filterBookings?.sort((a, b) => (a[field] - b[field]) * sortModifier);
 
-    return (
-        <div className="p-3 bg-stone-100">
-            <HeaderComponent />
+	//-------------Sorting Logic-----------------//
 
-            <div
-                className=" border-2 grid grid-cols-1 rounded gap-2 p-3"
-                role="table"
-            >
-                <TableHeader />
-
-                {isLoading ? (
-                    <LoadingComponent />
-                ) : (
-                    <div className="flex flex-col gap-2">
-                        {sortedBookings?.map((booking) => (
-                            <TableData
-                                key={booking.id}
-                                booking={booking}
-                                menuOpenId={menuOpenId}
-                                setMenuOpenId={setMenuOpenId}
-                            />
-                        ))}
-                    </div>
-                )}
-                <Pagination count={count} />
-            </div>
-        </div>
-    )
+	return (
+		<>
+			<HeaderComponent />
+			<Table bookings={sortedBookings} headers={tableHeaders} />
+			<Pagination count={count} />
+		</>
+	);
 }
 
-export default BookingsTable
+export default BookingsTable;

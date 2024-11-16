@@ -8,7 +8,7 @@
 	}
 
 	.form {
-		@apply flex flex-col gap-4 p-4 bg-stone-100 shadow-md rounded;
+		@apply flex flex-col gap-4 p-10 bg-indigo-50 shadow-md rounded font-poppins;
 	}
 
 	.formRow {
@@ -16,11 +16,11 @@
 	}
 
 	.label {
-		@apply text-sm font-bold font-sono;
+		@apply text-xs font-bold font-poppins;
 	}
 
 	.input {
-		@apply rounded border-2 border-stone-400 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-stone-400 text-sm font-sono;
+		@apply rounded ring-1 ring-indigo-200 bg-gray-100 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-400 text-sm font-sono;
 	}
 
 	.formButton {
@@ -28,7 +28,7 @@
 	}
 
 	.filterButton {
-		@apply text-sm font-sono font-semibold bg-stone-100 p-1 rounded shadow-md hover:bg-green-500 transition-all duration-500;
+		@apply text-xs font-poppins text-slate-600 font-semibold bg-indigo-200 px-4 py-1 rounded shadow-sm hover:bg-indigo-500 transition-all duration-500;
 	}
 }
 
