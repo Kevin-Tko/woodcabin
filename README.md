@@ -11,7 +11,7 @@ This is a web application meant to offer seamless booking of a weekend getaway c
 
 ## Technologies and Libraries
 
-### This is a React application which has incorporated various technologies and libraries:
+### Libraries and Technologies
 
     1. VS-code IDE
     2. Git & Github => version control
@@ -19,7 +19,7 @@ This is a web application meant to offer seamless booking of a weekend getaway c
     4. Tailwind CSS
     5. React-router => For routing purposes (BrowserRouter, Routes, Route)
     6. React-Icons
-    7. SupaBase
+    7. @supabase/supabase-js
     8. React-Query => Global remote state management
     9. React-Query => devtools
     10: date-fns => simplifying working dates
@@ -27,6 +27,8 @@ This is a web application meant to offer seamless booking of a weekend getaway c
     12: React-hook-form =>Handling form submission and form errors
     13. @reduxjs/toolkit => global state management
     14. React redux
+    15. Recharts
+    16. react-error-boundary
 
 ##### Tailwind CSS Setup
 
