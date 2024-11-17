@@ -11,7 +11,7 @@ function DashBoard() {
 
 			<Statistics />
 
-			<div className='grid grid-cols-2 gap-4'>
+			<div className='grid tablet:grid-cols-2 gap-4 mobile:grid-cols-1'>
 				<TodayActivity />
 				<StayDuration />
 			</div>

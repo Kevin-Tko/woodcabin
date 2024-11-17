@@ -22,7 +22,7 @@ function Statistics() {
 	const occupancy = percentageFormatter(status / totalBookings);
 
 	return (
-		<div className='grid grid-cols-4 gap-6'>
+		<div className='grid laptop:grid-cols-4 gap-6 tablet:grid-cols-2'>
 			<StatisticsItem icon={<HiOutlineBriefcase />} stats={totalBookings}>
 				Bookings
 			</StatisticsItem>

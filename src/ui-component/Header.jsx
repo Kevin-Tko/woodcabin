@@ -26,15 +26,16 @@ function Header() {
 	}
 
 	return (
-		<header className='py-1 px-2 pr-4 flex flex-row items-center justify-end gap-8 bg-inherit'>
+		<header className='py-1 px-2 pr-4 flex flex-row items-center tablet:justify-end gap-8 bg-inherit mobile:justify-between'>
 			<div className='flex flex-row items-center gap-3'>
 				<img
 					src={`${avatar ? avatar : '/images/default.jpg'}`}
 					alt='user-profile'
-					className='max-h-12 inline-block border-none rounded-full'
+					className='tablet:max-h-12 inline-block border-none rounded-full mobile:max-h-8'
 				/>
 				<p className='text-xs font-bold lowercase tracking-wide text-indigo-600'>{fullname}</p>
 			</div>
+
 			<div className='flex-row items-center gap-4 flex'>
 				<HeaderButton onclick={handleUserAccount}>
 					<HiOutlineUser />

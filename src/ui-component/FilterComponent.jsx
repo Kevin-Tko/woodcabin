@@ -21,7 +21,7 @@ function FilterComponent({ filterField, options }) {
 
 	return (
 		<div>
-			<div className='space-x-3 bg-indigo-50 rounded p-1 ring-1 ring-indigo-300'>
+			<div className='space-x-3 bg-indigo-50 rounded p-1 ring-1 ring-indigo-300 mobile:flex mobile:flex-col tablet:block mobile:gap-2'>
 				{options.map((option) => (
 					<FilterButton
 						onclick={() => handleParams(option.value)}

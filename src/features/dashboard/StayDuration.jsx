@@ -36,7 +36,7 @@ function StayDuration() {
 	}, []);
 
 	return (
-		<div className='bg-indigo-50 flex flex-col items-center justify-center p-2'>
+		<div className='bg-indigo-50 flex flex-col items-center justify-center p-2 overflow-scroll'>
 			<h2>Stay duration summary</h2>
 			<PieChart width={500} height={250}>
 				{/* <Pie data={bookings} dataKey='value' nameKey='name' cx='50%' cy='50%' outerRadius={50} fill='#8884d8' /> */}

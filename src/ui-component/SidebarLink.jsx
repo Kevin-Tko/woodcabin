@@ -6,7 +6,7 @@ import { NavLink } from 'react-router-dom';
 function SidebarLink({ children, icon, link }) {
 	return (
 		<li className='flex flex-row justify-center'>
-			<NavLink to={link} className='grid grid-cols-navlinkcols gap-3 w-full content-center p-2 rounded'>
+			<NavLink to={link} className='grid grid-cols-navlinkcols gap-3 w-full content-center p-2 rounded '>
 				<span className='self-center justify-self-end'>{icon}</span>
 				{children}
 			</NavLink>

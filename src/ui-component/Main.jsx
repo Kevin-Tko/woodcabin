@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 /* Outlet for all routes enclosed in the App layout in App component */
 function Main() {
 	return (
-		<main className='col-end-3 bg-indigo-100 overflow-y-auto p-10'>
+		<main className='col-end-3 bg-indigo-100 overflow-y-auto tablet:p-10 mobile:p-1'>
 			<Outlet />
 		</main>
 	);

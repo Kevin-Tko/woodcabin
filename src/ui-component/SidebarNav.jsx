@@ -9,7 +9,7 @@ import SidebarLink from './SidebarLink';
 function SidebarNav() {
 	return (
 		<nav>
-			<ul className=' flex flex-col gap-1 items-stretch py-1 px-3'>
+			<ul className=' flex flex-col gap-1 items-stretch py-1 px-3 '>
 				<SidebarLink icon={<HiOutlineHome />} link='dashboard'>
 					Home
 				</SidebarLink>
