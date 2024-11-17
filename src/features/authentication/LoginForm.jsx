@@ -1,12 +1,23 @@
 import { useState } from 'react';
 import Logo from '../../ui-component/Logo';
 import { useLogin } from './useLogin';
+import LoginFormLabel from '../../ui-component/LoginFormLabel';
+import LoginFormInput from '../../ui-component/LoginFormInput';
+import { LoginFormButton } from '../../ui-component/Button';
 
 function LoginForm() {
 	const [email, setEmail] = useState('test2@gmail.com');
 	const [password, setPassword] = useState('Year@2021');
 
-	const { loggingIn, login } = useLogin();
+	const { isLoading, mutate } = useLogin();
+
+	function handleEmailChange(e) {
+		setEmail(e.target.value);
+	}
+
+	function handlePasswordChange(e) {
+		setPassword(e.target.value);
+	}
 
 	function handleSubmit(e) {
 		e.preventDefault();
@@ -14,7 +25,7 @@ function LoginForm() {
 		if (!email || !password) return;
 
 		//Mutate function to clear input elements if login details are wrong
-		login(
+		mutate(
 			{ email, password },
 			{
 				onSettled: () => {
@@ -26,52 +37,31 @@ function LoginForm() {
 	}
 
 	return (
-		<div className='bg-indigo-100 w-1/3 p-4 left-1/2 top-1/2 absolute -translate-x-1/2 -translate-y-1/2 space-y-6 rounded'>
+		<div className='loginFormWrapper'>
 			<Logo />
 
-			<h1 className='text-center font-poppins text-2xl font-semibold'>Login to your Account</h1>
+			<h2 className='text-center font-poppins tablet:text-2xl font-semibold mobile:text-xl'>
+				Login to your Account
+			</h2>
 
 			<form
 				className='bg-indigo-50 ring-1 ring-indigo-300 rounded space-y-6 p-4 flex flex-col justify-center items-center'
 				onSubmit={handleSubmit}
 			>
 				<div className='flex flex-col gap-2 w-10/12'>
-					<label htmlFor='username' className='text-xs font-poppins font-bold'>
-						Email Address
-					</label>
-					<input
-						type='text'
-						name='username'
-						id='username'
-						autoComplete='username'
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-						className='rounded border-none ring-1 focus:ring-1 ring-indigo-200 px-2 py-2 bg-gray-50 focus:outline-none font-poppins text-xs font-semibold'
-					/>
+					<LoginFormLabel htmlfor='username'>Email Address</LoginFormLabel>
+					<LoginFormInput type='text' id='username' value={email} onchange={handleEmailChange} />
 				</div>
 
 				<div className='flex flex-col gap-2 w-10/12'>
-					<label htmlFor='password' className='text-xs font-poppins font-bold'>
-						Password
-					</label>
-					<input
-						type='password'
-						name='password'
-						id='password'
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-						className='rounded border-none ring-1 focus:ring-1 ring-indigo-200 bg-gray-50 px-2 py-2 focus:outline-none font-poppins text-xs font-semibold'
-					/>
+					<LoginFormLabel htmlfor='password'>Password</LoginFormLabel>
+					<LoginFormInput type='password' id='password' value={password} onchange={handlePasswordChange} />
 				</div>
 
 				<div className=' w-10/12'>
-					<button
-						type='submit'
-						disabled={loggingIn}
-						className={`bg-indigo-500 block w-full py-2 rounded text-center font-poppins text-stone-50 text-xs font-bold tracking-wider ${loggingIn ? 'bg-green-300 cursor-not-allowed' : ''}`}
-					>
+					<LoginFormButton type='submit' disable={isLoading}>
 						Login
-					</button>
+					</LoginFormButton>
 				</div>
 			</form>
 		</div>

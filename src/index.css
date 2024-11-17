@@ -30,6 +30,10 @@
 	.filterButton {
 		@apply text-xs font-poppins text-slate-600 font-semibold bg-indigo-200 px-4 py-1 rounded shadow-sm hover:bg-indigo-500 transition-all duration-500;
 	}
+
+	.loginFormWrapper {
+		@apply bg-indigo-100 laptop:w-96 desktop:w-1/3 p-4 left-1/2 top-1/2 absolute -translate-x-1/2 -translate-y-1/2 space-y-6 rounded mobile:w-full mobile:text-sm tablet:w-1/2 tvs:w-1/6 tvs:space-y-12;
+	}
 }
 
 .active {

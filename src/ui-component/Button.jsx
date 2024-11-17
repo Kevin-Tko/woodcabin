@@ -64,3 +64,15 @@ export function BackButton({ children, handleBack, type, disable }) {
 		</button>
 	);
 }
+
+export function LoginFormButton({ type, disable, children }) {
+	return (
+		<button
+			type={type}
+			disabled={disable}
+			className={`bg-indigo-500 block w-full py-2 rounded text-center font-poppins text-stone-50 text-xs font-bold tracking-wider ${disable ? 'cursor-not-allowed' : ''}`}
+		>
+			{children}
+		</button>
+	);
+}

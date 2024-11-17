@@ -8,15 +8,15 @@ export default {
 		},
 		screens: {
 			// => @media (min-width: 320px) { ... }
-			mobile: '320px',
+			mobile: '425px',
 			// => @media (min-width: 481px) { ... }
-			tablet: '481px',
+			tablet: '768px',
 			// => @media (min-width: 769px) { ... }
-			laptop: '769px',
+			laptop: '1024px',
 			// => @media (min-width: 1025px) { ... }
-			desktops: '1025px',
+			desktop: '1440px',
 			// => @media (min-width: 1201px) { ... }
-			tvs: '1201px',
+			tvs: '2560px',
 		},
 		extend: {
 			gridTemplateColumns: {
